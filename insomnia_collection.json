@@ -1,0 +1,276 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-03-07T12:00:00.000Z",
+  "__export_source": "codex.assignment4",
+  "resources": [
+    {
+      "_id": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Assignment 4 Quiz API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_assignment4",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:5000/api",
+        "token": ""
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "token"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1741348800000,
+      "_type": "environment"
+    },
+    {
+      "_id": "req_health",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Health",
+      "method": "GET",
+      "url": "{{ base_url }}/health",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 1741348800001,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_signup",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Signup",
+      "method": "POST",
+      "url": "{{ base_url }}/auth/signup",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"admin2\",\n  \"password\": \"admin123\",\n  \"role\": \"admin\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800002,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ base_url }}/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800003,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_me",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Get Me",
+      "method": "GET",
+      "url": "{{ base_url }}/auth/me",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800004,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_quizzes",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Get Quizzes",
+      "method": "GET",
+      "url": "{{ base_url }}/quizzes",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800005,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_quiz",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Create Quiz (Admin)",
+      "method": "POST",
+      "url": "{{ base_url }}/quizzes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Node.js Basics\",\n  \"description\": \"Simple quiz\",\n  \"isPublished\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800006,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_questions",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Get Questions By Quiz",
+      "method": "GET",
+      "url": "{{ base_url }}/quizzes/<quizId>/questions",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800007,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_question",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Create Question (Admin)",
+      "method": "POST",
+      "url": "{{ base_url }}/quizzes/<quizId>/questions",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"content\": \"Which command initializes npm?\",\n  \"options\": [\"npm start\", \"npm init\", \"node init\", \"npm install\"],\n  \"correctAnswerIndex\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800008,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_submit_quiz",
+      "parentId": "wrk_assignment4",
+      "created": 1741348800000,
+      "modified": 1741348800000,
+      "name": "Submit Quiz",
+      "method": "POST",
+      "url": "{{ base_url }}/quizzes/<quizId>/submit",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"answers\": [\n    { \"questionId\": \"<questionId1>\", \"selectedIndex\": 2 },\n    { \"questionId\": \"<questionId2>\", \"selectedIndex\": 1 }\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 1741348800009,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}
