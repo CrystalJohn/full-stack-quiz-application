@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (_req, res) => {
+  res.status(200).json({ success: true, message: "Backend is running", data: null });
+});
+
 app.get("/api/health", (_req, res) => {
   res.status(200).json({ success: true, message: "Server is running", data: null });
 });
