@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Alert, Button, Card, Form, Spinner, Table } from "react-bootstrap";
+import { Alert, Badge, Button, Card, Form, Modal, Spinner, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearQuizError,
@@ -18,6 +18,8 @@ const AdminQuestionsPage = () => {
   const [selectedQuizId, setSelectedQuizId] = useState("");
   const [questionForm, setQuestionForm] = useState(emptyQuestion);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [questionToDelete, setQuestionToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchQuizzes());
@@ -63,6 +65,19 @@ const AdminQuestionsPage = () => {
   };
 
   const selectedQuiz = useMemo(() => list.find((q) => q._id === selectedQuizId), [list, selectedQuizId]);
+
+  const handleDeleteClick = (questionId) => {
+    setQuestionToDelete(questionId);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (questionToDelete && selectedQuizId) {
+      dispatch(deleteQuestion({ questionId: questionToDelete, quizId: selectedQuizId }));
+    }
+    setShowDeleteModal(false);
+    setQuestionToDelete(null);
+  };
 
   return (
     <>
@@ -144,50 +159,60 @@ const AdminQuestionsPage = () => {
               </div>
             </Form>
 
-            <Table striped size="sm">
+            <Table striped responsive hover className="align-middle">
               <thead>
                 <tr>
-                  <th>Content</th>
-                  <th>Options</th>
-                  <th>Correct</th>
-                  <th>Actions</th>
+                  <th style={{ width: "35%" }}>Content</th>
+                  <th style={{ width: "30%" }}>Options</th>
+                  <th style={{ width: "20%" }}>Correct Answer</th>
+                  <th style={{ width: "15%" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {questions.map((question) => (
                   <tr key={question._id}>
                     <td>{question.content}</td>
-                    <td>{question.options.join(" | ")}</td>
-                    <td>{question.correctAnswerIndex}</td>
-                    <td className="d-flex gap-1">
-                      <Button
-                        size="sm"
-                        variant="outline-primary"
-                        onClick={() => {
-                          const opts = question.options.slice(0, 4);
-                          const padded =
-                            opts.length >= 4
-                              ? opts
-                              : [...opts, ...Array(4 - opts.length).fill("")];
-                          setEditingQuestionId(question._id);
-                          setQuestionForm({
-                            content: question.content,
-                            options: padded,
-                            correctAnswerIndex: question.correctAnswerIndex,
-                          });
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline-danger"
-                        onClick={() =>
-                          dispatch(deleteQuestion({ questionId: question._id, quizId: selectedQuizId }))
-                        }
-                      >
-                        Delete
-                      </Button>
+                    <td>
+                      <ul className="mb-0 ps-3">
+                        {question.options.map((opt, i) => (
+                          <li key={i}>{opt}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td>
+                      <Badge bg="success" className="text-wrap text-start">
+                        {question.options[question.correctAnswerIndex] || `Option ${question.correctAnswerIndex + 1}`}
+                      </Badge>
+                    </td>
+                    <td>
+                      <div className="d-flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline-primary"
+                          onClick={() => {
+                            const opts = question.options.slice(0, 4);
+                            const padded =
+                              opts.length >= 4
+                                ? opts
+                                : [...opts, ...Array(4 - opts.length).fill("")];
+                            setEditingQuestionId(question._id);
+                            setQuestionForm({
+                              content: question.content,
+                              options: padded,
+                              correctAnswerIndex: question.correctAnswerIndex,
+                            });
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline-danger"
+                          onClick={() => handleDeleteClick(question._id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -196,6 +221,24 @@ const AdminQuestionsPage = () => {
           </Card.Body>
         </Card>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Xác nhận xóa</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Bạn có chắc chắn muốn xóa câu hỏi này không? Thao tác này không thể hoàn tác.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Hủy
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Xóa
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
